@@ -180,14 +180,14 @@ class StrategyResolver(StrategyCoreResolver):
 
         assert actual_cvx_crv_helper_tree > actual_tree_cvx_crv_delta
 
-        ## CRV is sent to Governance, just check balanceIncresed
-        assert after.balances("crv", "governanceRewards") > before.balances(
-            "crv", "governanceRewards"
+        ## CRV is sent to Governance, just check balance incresed
+        assert after.balances("cvxCrv", "governanceRewards") > before.balances(
+            "cvxCrv", "governanceRewards"
         )
 
         ## Strategist Perf fee is set to 0, no funds have moved
-        assert after.balances("crv", "strategist") == before.balances(
-            "crv", "strategist"
+        assert after.balances("cvxCrv", "strategist") == before.balances(
+            "cvxCrv", "strategist"
         )
 
         # 0% of want should be transferred to governance

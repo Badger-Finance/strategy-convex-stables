@@ -41,8 +41,8 @@ import "deps/libraries/TokenSwapPathRegistry.sol";
     === Harvest ===
     1. Withdraw accrued rewards from staking positions (claim unclaimed positions as well)
     2. Convert 3CRV -> CRV via USDC
-    3. Process fees on any bare cvxCRV harvested
-    4. Process fees on CRV and convert CRV -> cvxCRV
+    3. Swap CRV -> cvxCRV
+    4. Process fees on cvxCRV harvested + swapped
     5. Deposit remaining cvxCRV into helper vault and distribute
     6. Process fees on CVX, swap CVX for bveCVX and distribute
 
@@ -405,7 +405,24 @@ contract StrategyConvexStables is
             }
         }
 
-        // 3. Process fees on any bare cvxCRV harvested
+        // 3. Swap CRV -> cvxCRV
+        uint256 crvBalance = crvToken.balanceOf(address(this));
+        if (crvBalance > 0) {
+            uint256 minCvxCrvOut =
+                crvBalance.mul(MAX_FEE.sub(stableSwapSlippageTolerance)).div(
+                    MAX_FEE
+                );
+            _exchange(
+                crv,
+                cvxCrv,
+                crvBalance,
+                minCvxCrvOut,
+                crvCvxCrvPoolIndex,
+                true
+            );
+        }
+
+        // 4. Process fees on cvxCRV harvested + swapped
         uint256 cvxCrvBalance = cvxCrvToken.balanceOf(address(this));
         if (cvxCrvBalance > 0) {
             // Process performance fees on CRV
@@ -437,56 +454,6 @@ contract StrategyConvexStables is
                     block.timestamp
                 );
             }
-        }
-
-        // 4. Process fees on CRV and convert CRV -> cvxCRV
-        uint256 crvBalance = crvToken.balanceOf(address(this));
-        if (crvBalance > 0) {
-            // Process performance fees on CRV
-            if (performanceFeeGovernance > 0) {
-                uint256 crvToGovernance =
-                    crvBalance.mul(performanceFeeGovernance).div(MAX_FEE);
-                crvToken.safeTransfer(
-                    IController(controller).rewards(),
-                    crvToGovernance
-                );
-                emit PerformanceFeeGovernance(
-                    IController(controller).rewards(),
-                    crv,
-                    crvToGovernance,
-                    block.number,
-                    block.timestamp
-                );
-            }
-
-            if (performanceFeeStrategist > 0) {
-                uint256 crvToStrategist =
-                    crvBalance.mul(performanceFeeStrategist).div(MAX_FEE);
-                crvToken.safeTransfer(strategist, crvToStrategist);
-                emit PerformanceFeeStrategist(
-                    strategist,
-                    crv,
-                    crvToStrategist,
-                    block.number,
-                    block.timestamp
-                );
-            }
-
-            // Exchange remaining CRV for cvxCRV
-            uint256 crvToDistribute = crvToken.balanceOf(address(this));
-
-            uint256 minCvxCrvOut =
-                crvToDistribute
-                    .mul(MAX_FEE.sub(stableSwapSlippageTolerance))
-                    .div(MAX_FEE);
-            _exchange(
-                crv,
-                cvxCrv,
-                crvToDistribute,
-                minCvxCrvOut,
-                crvCvxCrvPoolIndex,
-                true
-            );
         }
 
         // 5. Deposit remaining cvxCRV into helper vault and distribute

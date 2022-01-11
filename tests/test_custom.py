@@ -66,7 +66,7 @@ def test_are_you_trying(sett_id):
         assert True
 
     ## The fees are in CRV and CVX
-    assert harvest.events["PerformanceFeeGovernance"][0]["token"] == strategy.crv()
+    assert harvest.events["PerformanceFeeGovernance"][0]["token"] == strategy.cvxCrv()
     assert harvest.events["PerformanceFeeGovernance"][1]["token"] == strategy.cvx()
 
     ## Distributions are in bcvxCRV and bveCVX
