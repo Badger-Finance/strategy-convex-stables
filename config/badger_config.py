@@ -10,7 +10,7 @@ whales = registry.whales
 sett_config = DotMap(
     native=DotMap(
         convexMimCrv=DotMap(
-            strategyName="StrategyConvexStakingOptimizer",
+            strategyName="StrategyConvexStables",
             params=DotMap(
                 want=pools.mimCrv.token,
                 pid=curve.pids.mimCrv,
@@ -27,7 +27,7 @@ sett_config = DotMap(
             ),
         ),
         convexFraxCrv=DotMap(
-            strategyName="StrategyConvexStakingOptimizer",
+            strategyName="StrategyConvexStables",
             params=DotMap(
                 want=pools.fraxCrv.token,
                 pid=curve.pids.fraxCrv,

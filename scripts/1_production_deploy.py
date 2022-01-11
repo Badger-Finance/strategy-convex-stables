@@ -3,7 +3,7 @@ import time
 from brownie import (
     accounts,
     network,
-    StrategyConvexStakingOptimizer,
+    StrategyConvexStables,
     SettV4,
     AdminUpgradeabilityProxy,
     Controller,
@@ -168,7 +168,7 @@ def deploy_strategy(
 
     print("Strategy Arguments: ", args)
 
-    strat_logic = StrategyConvexStakingOptimizer.deploy({"from": dev})
+    strat_logic = StrategyConvexStables.deploy({"from": dev})
     time.sleep(sleep_between_tx)
 
     strat_proxy = AdminUpgradeabilityProxy.deploy(
@@ -181,7 +181,7 @@ def deploy_strategy(
 
     ## We delete from deploy and then fetch again so we can interact
     AdminUpgradeabilityProxy.remove(strat_proxy)
-    strat_proxy = StrategyConvexStakingOptimizer.at(strat_proxy.address)
+    strat_proxy = StrategyConvexStables.at(strat_proxy.address)
 
     console.print("[green]Strategy was deployed at: [/green]", strat_proxy.address)
 

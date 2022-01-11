@@ -1,5 +1,5 @@
 import time
-from brownie import accounts, network, SettV3, BadgerRegistry, StrategyConvexStakingOptimizer
+from brownie import accounts, network, SettV3, BadgerRegistry, StrategyConvexStables
 from config import REGISTRY
 from helpers.constants import AddressZero
 from helpers.utils import get_config
@@ -43,7 +43,7 @@ def main():
 
     for key in STRAT_KEYS:
 
-        strategy = StrategyConvexStakingOptimizer.at(STRATEGIES[key])
+        strategy = StrategyConvexStables.at(STRATEGIES[key])
 
         assert strategy.paused() == False
 

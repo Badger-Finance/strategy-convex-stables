@@ -154,7 +154,7 @@ def test_migrate_staking_optimizer(
     console.print(f"[yellow]Processing {strategy_key}...[/yellow]")
 
     # Get current strategy
-    strategy = interface.IStrategyConvexStakingOptimizer(OLD_STRATEGIES[strategy_key])
+    strategy = interface.IStrategyConvexStables(OLD_STRATEGIES[strategy_key])
     # Get want
     want = interface.IERC20(strategy.want())
 

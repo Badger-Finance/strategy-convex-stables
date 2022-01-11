@@ -4,6 +4,8 @@ pragma solidity >=0.5.0 <0.8.0;
 interface ISettV4 {
     function token() external view returns (address);
 
+    function decimals() external view returns (uint256);
+
     function keeper() external view returns (address);
 
     function governance() external view returns (address);
