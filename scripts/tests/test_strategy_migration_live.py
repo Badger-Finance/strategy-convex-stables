@@ -2,7 +2,7 @@ import brownie
 import pytest
 import json
 from brownie import (
-    StrategyConvexStakingOptimizer,
+    StrategyConvexStables,
     SettV4,
     Controller,
     accounts,
@@ -118,11 +118,11 @@ def test_migrate_staking_optimizer(
     console.print(f"[yellow]Processing {strategy_key}...[/yellow]")
 
     # Get current strategy
-    strategy = interface.IStrategyConvexStakingOptimizer(strategies[strategy_key])
+    strategy = interface.IStrategyConvexStables(strategies[strategy_key])
     # Get vault
     vault = interface.ISettV4(vaults[strategy_key])
     # Get new strategy
-    newStrategy = StrategyConvexStakingOptimizer.at(NEW_STRATEGIES[strategy_key])
+    newStrategy = StrategyConvexStables.at(NEW_STRATEGIES[strategy_key])
     # Get want
     want = interface.IERC20(strategy.want())
 

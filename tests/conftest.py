@@ -3,7 +3,7 @@ from brownie import (
     interface,
     Controller,
     SettV4,
-    StrategyConvexStakingOptimizer,
+    StrategyConvexStables,
     Wei,
 )
 from config import (
@@ -79,7 +79,7 @@ def deploy(sett_config):
     ]
 
     ## Start up Strategy
-    strategy = StrategyConvexStakingOptimizer.deploy({"from": deployer})
+    strategy = StrategyConvexStables.deploy({"from": deployer})
     strategy.initialize(*args)
 
 
@@ -104,7 +104,7 @@ def deploy(sett_config):
     controller.setStrategy(want, strategy, {"from": deployer})
 
     # Generate test want for user
-    generate_curve_LP_assets(deployer, Wei("10 ether"), sett_config)
+    generate_curve_LP_assets(deployer, Wei("20 ether"), sett_config)
 
     assert want.balanceOf(deployer.address) > 0
 

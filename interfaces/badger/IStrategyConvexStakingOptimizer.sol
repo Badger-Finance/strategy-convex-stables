@@ -3,7 +3,7 @@
 pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
-interface IStrategyConvexStakingOptimizer {
+interface IStrategyConvexStables {
     event ExtraRewardsTokenSet(
         address indexed token,
         uint256 autoCompoundingBps,
@@ -76,8 +76,7 @@ interface IStrategyConvexStakingOptimizer {
 
     function addExtraRewardsToken(
         address _extraToken,
-        StrategyConvexStakingOptimizer.RewardTokenConfig
-            calldata _rewardsConfig,
+        StrategyConvexStables.RewardTokenConfig calldata _rewardsConfig,
         address[] calldata _swapPathToWant
     ) external;
 
@@ -160,7 +159,7 @@ interface IStrategyConvexStakingOptimizer {
 
     function harvest()
         external
-        returns (StrategyConvexStakingOptimizer.HarvestData memory);
+        returns (StrategyConvexStables.HarvestData memory);
 
     function initialize(
         address _governance,
@@ -171,7 +170,7 @@ interface IStrategyConvexStakingOptimizer {
         address[4] calldata _wantConfig,
         uint256 _pid,
         uint256[3] calldata _feeConfig,
-        StrategyConvexStakingOptimizer.CurvePoolConfig calldata _curvePool
+        StrategyConvexStables.CurvePoolConfig calldata _curvePool
     ) external;
 
     function initializeApprovals() external;
@@ -235,9 +234,7 @@ interface IStrategyConvexStakingOptimizer {
 
     function strategist() external view returns (address);
 
-    function tend()
-        external
-        returns (StrategyConvexStakingOptimizer.TendData memory);
+    function tend() external returns (StrategyConvexStables.TendData memory);
 
     function threeCrv() external view returns (address);
 
@@ -278,7 +275,7 @@ interface IStrategyConvexStakingOptimizer {
     function withdrawalMaxDeviationThreshold() external view returns (uint256);
 }
 
-interface StrategyConvexStakingOptimizer {
+interface StrategyConvexStables {
     struct RewardTokenConfig {
         uint256 autoCompoundingBps;
         uint256 autoCompoundingPerfFee;

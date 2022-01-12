@@ -1,30 +1,11 @@
-import brownie
-from brownie import *
+from brownie import interface, chain
 from helpers.constants import MaxUint256
-from helpers.SnapshotManager import SnapshotManager
-from helpers.time import days
 from helpers.utils import (
     approx,
 )
 from config.badger_config import sett_config
 import pytest
 from conftest import deploy
-
-"""
-  TODO: Put your tests here to prove the strat is good!
-  See test_harvest_flow, for the basic tests
-  See test_strategy_permissions, for tests at the permissions level
-"""
-
-def test_proper_fees():
-    """
-    Per the settings, governance takes 20% perf fee
-    And strategist 0
-    Let's do a check on the events to prove that's the case
-    """
-    assert True
-
-    ## TODO: Custom Test to check for proper funds distribution during harvest event
 
 @pytest.mark.parametrize(
     "sett_id",
@@ -69,16 +50,13 @@ def test_are_you_trying(sett_id):
 
     harvest = strategy.harvest({"from": deployer})
 
-    ## Assert perFee for governance is exactly 20% // Round because huge numbers
-    assert approx(
-        (
-            harvest.events["PerformanceFeeGovernance"][0]["amount"]
-            + harvest.events["TreeDistribution"][0]["amount"]
-        )
-        * 0.2,
-        harvest.events["PerformanceFeeGovernance"][0]["amount"],
-        1,
-    )
+    ## Fees are being processed
+    assert harvest.events["PerformanceFeeGovernance"][0]["amount"] > 0
+    assert harvest.events["PerformanceFeeGovernance"][1]["amount"] > 0
+
+    ## Assets are being distributed
+    assert harvest.events["TreeDistribution"][0]["amount"] > 0
+    assert harvest.events["TreeDistribution"][1]["amount"] > 0
 
     ## Fail if PerformanceFeeStrategist is fired
     try:
@@ -87,5 +65,10 @@ def test_are_you_trying(sett_id):
     except:
         assert True
 
-    ## The fee is in bveCVX
-    assert harvest.events["PerformanceFeeGovernance"][0]["token"] == strategy.bveCVX()
+    ## The fees are in CRV and CVX
+    assert harvest.events["PerformanceFeeGovernance"][0]["token"] == strategy.cvxCrv()
+    assert harvest.events["PerformanceFeeGovernance"][1]["token"] == strategy.cvx()
+
+    ## Distributions are in bcvxCRV and bveCVX
+    assert harvest.events["TreeDistribution"][0]["token"] == strategy.cvxCrvHelperVault()
+    assert harvest.events["TreeDistribution"][1]["token"] == strategy.bveCVX()

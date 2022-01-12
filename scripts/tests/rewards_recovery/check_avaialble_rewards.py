@@ -50,7 +50,7 @@ def main():
         console.print(f"\n[yellow]Rewards to claim from {strategy_key}:[/yellow]")
 
         # Get current strategy
-        strategy = interface.IStrategyConvexStakingOptimizer(OLD_STRATEGIES[strategy_key])
+        strategy = interface.IStrategyConvexStables(OLD_STRATEGIES[strategy_key])
         strat_actor = accounts.at(OLD_STRATEGIES[strategy_key], force=True)
 
         # Get reward pool

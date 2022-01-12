@@ -4,7 +4,7 @@ from brownie import (
     accounts,
     network,
     SettV4,
-    StrategyConvexStakingOptimizer,
+    StrategyConvexStables,
     AdminUpgradeabilityProxy,
 )
 
@@ -176,7 +176,7 @@ def deploy_vaults_and_strategies(
 
     ## We delete from deploy and then fetch again so we can interact
     AdminUpgradeabilityProxy.remove(strat_proxy)
-    strat_proxy = StrategyConvexStakingOptimizer.at(strat_proxy.address)
+    strat_proxy = StrategyConvexStables.at(strat_proxy.address)
 
     assert params.withdrawalFee == 10
     assert params.performanceFeeGovernance == 1000

@@ -4,8 +4,8 @@ from brownie import SettV4, Controller, interface, accounts
 def main(): 
     vault = SettV4.at("0xD3eC271d07f2f9a4eB5dfD314f84f8a94ba96145")
     ctl = Controller.at("0xe505F7C2FFcce7Ae4b076456BC02A70D8fe8d4d2")
-    old_strat = interface.IStrategyConvexStakingOptimizer("0xe66dB6Eb807e6DAE8BD48793E9ad0140a2DEE22A")
-    new_strat = interface.IStrategyConvexStakingOptimizer("0x61e16b46F74aEd8f9c2Ec6CB2dCb2258Bdfc7071")
+    old_strat = interface.IStrategyConvexStables("0xe66dB6Eb807e6DAE8BD48793E9ad0140a2DEE22A")
+    new_strat = interface.IStrategyConvexStables("0x61e16b46F74aEd8f9c2Ec6CB2dCb2258Bdfc7071")
 
 
     dev = accounts.at("0xeE8b29AA52dD5fF2559da2C50b1887ADee257556", force=True)
