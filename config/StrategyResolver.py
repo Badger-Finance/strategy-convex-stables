@@ -144,9 +144,19 @@ class StrategyResolver(StrategyCoreResolver):
         cvx_crv_pool_delta = after.balances(
             "cvxCrv", "cvxCrvRewardsPool"
         ) - before.balances("cvxCrv", "cvxCrvRewardsPool")
+        crv_pool_delta = (after.balances(
+            "crv", "cvxCrvRewardsPool"
+        ) - before.balances("crv", "cvxCrvRewardsPool")) + (
+            after.balances(
+            "crv", "cvxRewardsPool"
+        ) - before.balances("crv", "cvxRewardsPool")) + (
+            after.balances(
+            "crv", "baseRewardsPool"
+        ) - before.balances("crv", "baseRewardsPool"))
+        
 
-        ## We earned at least 80% of the delta (because we get some extra stuff)
-        assert cvx_crv_helper_vault_delta > cvx_crv_pool_delta * 0.8
+        ## We earned at least 80% of the delta (Take crv 1:1 cvxCrv)
+        assert cvx_crv_helper_vault_delta > (cvx_crv_pool_delta + crv_pool_delta) * 0.8
 
         # Check that helper vault shares were distributed correctly:
         cvxCrvHelperVault = SettV4.at(convex_registry.cvxCrvHelperVault)
