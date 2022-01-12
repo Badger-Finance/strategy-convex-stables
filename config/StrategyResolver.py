@@ -177,18 +177,22 @@ class StrategyResolver(StrategyCoreResolver):
         )
 
         # 100% of cvxCrvHelperVault shares were distributed through the tree
-        actual_cvx_crv_helper_tree = (
+        actual_cvx_crv_helper_delta = (
             (
                 after.balances("cvxCrv", "cvxCrvHelperVault")
                 - before.balances("cvxCrv", "cvxCrvHelperVault")
             )
-            * (cvxCrvHelperVault.getPricePerFullShare() / 1e18)
+            / (cvxCrvHelperVault.getPricePerFullShare() / 1e18)
         )
-        actual_tree_cvx_crv_delta = after.balances(
-            "cvxCrv", "badgerTree"
-        ) - before.balances("cvxCrv", "badgerTree")
+        actual_bcvx_crv_tree_delta = after.balances(
+            "bCvxCrv", "badgerTree"
+        ) - before.balances("bCvxCrv", "badgerTree")
 
-        assert actual_cvx_crv_helper_tree > actual_tree_cvx_crv_delta
+        assert approx(
+            actual_cvx_crv_helper_delta, 
+            actual_bcvx_crv_tree_delta,
+            1,
+        )
 
         ## CRV is sent to Governance, just check balance incresed
         assert after.balances("cvxCrv", "governanceRewards") > before.balances(
