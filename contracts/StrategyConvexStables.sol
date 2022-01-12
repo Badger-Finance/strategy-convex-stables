@@ -454,11 +454,9 @@ contract StrategyConvexStables is
                     block.timestamp
                 );
             }
-        }
 
-        // 5. Deposit remaining cvxCRV into helper vault and distribute
-        uint256 cvxCrvToTree = cvxCrvToken.balanceOf(address(this));
-        if (cvxCrvToTree > 0) {
+            // 5. Deposit remaining cvxCRV into helper vault and distribute
+            uint256 cvxCrvToTree = cvxCrvToken.balanceOf(address(this));
             // TODO: [Optimization] Allow contract to circumvent blockLock to dedup deposit operations
 
             uint256 treeHelperVaultBefore =
