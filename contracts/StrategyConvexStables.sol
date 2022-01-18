@@ -445,7 +445,7 @@ contract StrategyConvexStables is
             if (performanceFeeStrategist > 0) {
                 uint256 cvxCrvToStrategist =
                     cvxCrvBalance.mul(performanceFeeStrategist).div(MAX_FEE);
-                crvToken.safeTransfer(strategist, cvxCrvToStrategist);
+                cvxCrvToken.safeTransfer(strategist, cvxCrvToStrategist);
                 emit PerformanceFeeStrategist(
                     strategist,
                     cvxCrv,
