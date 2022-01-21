@@ -48,7 +48,7 @@ def main():
         registry = BadgerRegistry.at(REGISTRY)
 
         governance = registry.get("governance")
-        treasuryVault = registry.get("treasuryVault")
+        treasuryOps = "0x042B32Ac6b453485e357938bdC38e0340d4b9276"
         guardian = registry.get("guardian")
         keeper = registry.get("keeper")
         badgerTree = registry.get("badgerTree")
@@ -60,7 +60,6 @@ def main():
         assert keeper != AddressZero
         assert badgerTree != AddressZero
         assert controller != AddressZero
-        assert treasuryVault != AddressZero
         assert devProxyAdmin != AddressZero
 
         # Confirm all productions parameters
@@ -70,7 +69,7 @@ def main():
             guardian, 
             keeper,  
             badgerTree,
-            treasuryVault,
+            treasuryOps,
             strategy, 
             controller,
             vault,
@@ -92,7 +91,7 @@ def check_parameters(
     guardian, 
     keeper,  
     badgerTree,
-    treasuryVault,
+    treasuryOps,
     strategy, 
     controller,
     vault,
@@ -119,7 +118,7 @@ def check_parameters(
     assert strategy.badgerTree() == badgerTree
 
     # Check controller params
-    assert controller.rewards() == treasuryVault
+    assert controller.rewards() == treasuryOps
     assert controller.governance() == governance
     assert controller.strategist() == governance
     assert controller.keeper() == keeper
