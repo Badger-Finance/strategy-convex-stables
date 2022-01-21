@@ -111,7 +111,7 @@ def check_parameters(
     assert strategy.keeper() == keeper
     assert strategy.guardian() == guardian
     assert strategy.strategist() == recovered
-    # assert strategy.governance() == governance
+    assert strategy.governance() == governance
 
     assert strategy.pid() == config.params.pid
     assert strategy.cvxCrvHelperVault() == config.params.cvxCrvHelperVault
@@ -119,7 +119,7 @@ def check_parameters(
 
     # Check controller params
     assert controller.rewards() == treasuryOps
-    # assert controller.governance() == governance
+    assert controller.governance() == governance
     assert controller.strategist() == governance
     assert controller.keeper() == keeper
 
@@ -127,7 +127,7 @@ def check_parameters(
     assert vault.token() == config.params.want
     assert vault.keeper() == keeper
     assert vault.guardian() == guardian
-    # assert vault.governance() == governance
+    assert vault.governance() == governance
 
     # Check proper wire-up
     assert strategy.controller() == controller.address
@@ -144,10 +144,10 @@ def check_proxyAdmins(
     vault,
     devProxyAdmin
 ):
-    # assert web3.eth.getStorageAt(
-    #     strategy.address, 
-    #     ADMIN_SLOT
-    #     ).hex() == devProxyAdmin
+    assert web3.eth.getStorageAt(
+        strategy.address, 
+        ADMIN_SLOT
+        ).hex() == devProxyAdmin
     assert web3.eth.getStorageAt(
         vault.address, 
         ADMIN_SLOT
